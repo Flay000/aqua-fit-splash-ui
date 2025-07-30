@@ -8,33 +8,52 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 210 100% 98%;
+    --foreground: 200 50% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 180 100% 99%;
+    --card-foreground: 200 50% 10%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 180 100% 99%;
+    --popover-foreground: 200 50% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 180 100% 50%;
     --primary-foreground: 210 40% 98%;
+    --primary-glow: 180 100% 70%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 187 85% 53%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 180 25% 95%;
+    --muted-foreground: 200 25% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 174 72% 56%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 180 25% 88%;
+    --input: 180 15% 93%;
+    --ring: 180 100% 50%;
+
+    /* AquaFit specific colors */
+    --aqua-primary: 180 100% 50%;
+    --aqua-secondary: 187 85% 53%;
+    --aqua-tertiary: 174 72% 56%;
+    --aqua-glow: 180 100% 70%;
+
+    /* Gradients */
+    --gradient-aqua: linear-gradient(135deg, hsl(var(--aqua-primary)), hsl(var(--aqua-secondary)));
+    --gradient-flow: linear-gradient(45deg, hsl(var(--aqua-primary)) 0%, hsl(var(--aqua-secondary)) 25%, hsl(var(--aqua-tertiary)) 50%, hsl(var(--aqua-secondary)) 75%, hsl(var(--aqua-primary)) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--aqua-primary) / 0.05));
+
+    /* Shadows */
+    --shadow-aqua: 0 10px 30px -10px hsl(var(--aqua-primary) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--aqua-glow) / 0.4);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.5rem;
 
@@ -101,5 +120,67 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-subtle);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .aqua-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .aqua-card {
+    @apply bg-card border border-border/50 backdrop-blur-sm;
+    box-shadow: var(--shadow-aqua);
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.8) 100%);
+  }
+  
+  .aqua-button {
+    @apply bg-primary text-primary-foreground hover:scale-105 active:scale-95;
+    background: var(--gradient-aqua);
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-aqua);
+  }
+  
+  .aqua-input {
+    @apply bg-input border-border/50 focus:border-primary focus:ring-primary/20;
+    transition: var(--transition-smooth);
+  }
+  
+  .aqua-input:focus {
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+  }
+  
+  .floating-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .ripple-bg {
+    background: var(--gradient-flow);
+    background-size: 400% 400%;
+    animation: ripple 8s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes ripple {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 25%; }
+    50% { background-position: 50% 100%; }
+    75% { background-position: 25% 0%; }
+  }
+  
+  @keyframes spin-glow {
+    0% { transform: rotate(0deg); box-shadow: 0 0 20px hsl(var(--primary) / 0.5); }
+    50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.8); }
+    100% { transform: rotate(360deg); box-shadow: 0 0 20px hsl(var(--primary) / 0.5); }
+  }
+  
+  .logo-spin {
+    animation: spin-glow 2s linear infinite;
   }
 }
