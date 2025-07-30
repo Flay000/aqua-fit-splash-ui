@@ -9,6 +9,7 @@ import { Calculator, Weight, Ruler, Upload, Brain, Utensils, Droplet, Beef } fro
 import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/Layout";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import LoadingScreen from "@/components/LoadingScreen"; // <-- Importação do seu componente de loading
 
 // Configure a API Key do Gemini
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "YOUR_GEMINI_API_KEY";
@@ -54,13 +55,14 @@ const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false); // <-- Estado que controlará o loading
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Função de cálculo de IMC revertida para a versão original (rápida)
   const calculateBMI = () => {
     const weightNum = parseFloat(formData.weight);
     const heightNum = parseFloat(formData.height) / 100;
@@ -137,10 +139,10 @@ const Dashboard = () => {
       return;
     }
 
-    setIsAnalyzing(true);
+    setIsAnalyzing(true); // <-- INICIA O LOADING
     setAiAnalysis(null);
 
-    const MAX_RETRIES = 5; // Define o número máximo de tentativas
+    const MAX_RETRIES = 5;
 
     try {
       const weightNum = parseFloat(formData.weight);
@@ -154,80 +156,70 @@ const Dashboard = () => {
       };
 
       const prompt = `
-        Você é um especialista em fitness e nutrição. Analise a imagem corporal e os dados do usuário para fornecer uma estimativa e um plano.
-        Dados do Usuário:
-        - Peso: ${formData.weight} kg, Altura: ${formData.height} cm, Idade: ${formData.age} anos, Gênero: ${formData.gender}
-        - IMC: ${bmiResult.value} (${bmiResult.category})
-        - Objetivo: ${formData.goal}
-        - Restrições/Condições de Saúde: ${formData.healthCondition || "Nenhuma"}
+          Você é um especialista em fitness e nutrição. Analise a imagem corporal e os dados do usuário para fornecer uma estimativa e um plano.
+          Dados do Usuário:
+          - Peso: ${formData.weight} kg, Altura: ${formData.height} cm, Idade: ${formData.age} anos, Gênero: ${formData.gender}
+          - IMC: ${bmiResult.value} (${bmiResult.category})
+          - Objetivo: ${formData.goal}
+          - Restrições/Condições de Saúde: ${formData.healthCondition || "Nenhuma"}
+  
+          Sua Tarefa:
+          1. Estime o percentual de gordura corporal.
+          2. Estime o percentual de massa muscular.
+          3. Crie um plano alimentar com EXATAMENTE 5 refeições (Café da Manhã, Lanche da Manhã, Almoço, Lanche da Tarde, Jantar).
+          4. Ajuste a dieta ao objetivo do usuário.
+          5. Seja direto e use o formato de resposta obrigatório abaixo. NÃO adicione nenhuma outra informação ou formatação.
+  
+          Formato da Resposta (OBRIGATÓRIO):
+          Body Fat: [valor]%
+          Muscle Mass: [valor]%
+          Diet Plan:
+          - Café da Manhã: [descrição da refeição]
+          - Lanche da Manhã: [descrição da refeição]
+          - Almoço: [descrição da refeição]
+          - Lanche da Tarde: [descrição da refeição]
+          - Jantar: [descrição da refeição]
+        `;
 
-        Sua Tarefa:
-        1. Estime o percentual de gordura corporal.
-        2. Estime o percentual de massa muscular.
-        3. Crie um plano alimentar com EXATAMENTE 5 refeições (Café da Manhã, Lanche da Manhã, Almoço, Lanche da Tarde, Jantar).
-        4. Ajuste a dieta ao objetivo do usuário.
-        5. Seja direto e use o formato de resposta obrigatório abaixo. NÃO adicione nenhuma outra informação ou formatação.
-
-        Formato da Resposta (OBRIGATÓRIO):
-        Body Fat: [valor]%
-        Muscle Mass: [valor]%
-        Diet Plan:
-        - Café da Manhã: [descrição da refeição]
-        - Lanche da Manhã: [descrição da refeição]
-        - Almoço: [descrição da refeição]
-        - Lanche da Tarde: [descrição da refeição]
-        - Jantar: [descrição da refeição]
-      `;
-
-      // --- Início da Lógica de Retentativa ---
       for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         console.log(`Tentativa de análise com IA: ${attempt} de ${MAX_RETRIES}`);
-        
         try {
-            const result = await model.generateContent([prompt, imagePart]);
-            const responseText = await result.response.text();
-    
-            const bodyFatMatch = responseText.match(/Body Fat: ([\d.]+)%/);
-            const muscleMassMatch = responseText.match(/Muscle Mass: ([\d.]+)%/);
-            const dietPlanMatch = responseText.match(/Diet Plan:\n((?:- .+\n?)+)/);
-    
-            // Se a resposta for válida, processa e sai do loop
-            if (bodyFatMatch && muscleMassMatch && dietPlanMatch) {
-              console.log("Análise bem-sucedida!");
-              const bodyFatPercentage = parseFloat(bodyFatMatch[1]);
-              const muscleMassPercentage = parseFloat(muscleMassMatch[1]);
-              const dietPlan = dietPlanMatch[1].trim();
-    
-              setAiAnalysis({
-                bodyFatPercentage,
-                muscleMassPercentage,
-                dietPlan,
-                waterIntake: `${waterIntake} ml`,
-                proteinIntake: `${proteinIntake} g`,
-              });
-    
-              toast({
-                title: "Análise Concluída!",
-                description: "Sua análise corporal e plano de dieta estão prontos.",
-              });
-              
-              setIsAnalyzing(false); // Para a animação de loading
-              return; // Sai da função handleImageAnalysis com sucesso
-            }
-
-            // Se a resposta não for válida, lança um erro para acionar a próxima tentativa
-            throw new Error("Formato de resposta inválido da IA.");
-
+          const result = await model.generateContent([prompt, imagePart]);
+          const responseText = await result.response.text();
+          const bodyFatMatch = responseText.match(/Body Fat: ([\d.]+)%/);
+          const muscleMassMatch = responseText.match(/Muscle Mass: ([\d.]+)%/);
+          const dietPlanMatch = responseText.match(/Diet Plan:\n((?:- .+\n?)+)/);
+          
+          if (bodyFatMatch && muscleMassMatch && dietPlanMatch) {
+            console.log("Análise bem-sucedida!");
+            const bodyFatPercentage = parseFloat(bodyFatMatch[1]);
+            const muscleMassPercentage = parseFloat(muscleMassMatch[1]);
+            const dietPlan = dietPlanMatch[1].trim();
+            
+            setAiAnalysis({
+              bodyFatPercentage,
+              muscleMassPercentage,
+              dietPlan,
+              waterIntake: `${waterIntake} ml`,
+              proteinIntake: `${proteinIntake} g`,
+            });
+            
+            toast({
+              title: "Análise Concluída!",
+              description: "Sua análise corporal e plano de dieta estão prontos.",
+            });
+            
+            setIsAnalyzing(false); // Para a animação de loading
+            return;
+          }
+          throw new Error("Formato de resposta inválido da IA.");
         } catch (error) {
-            console.error(`Tentativa ${attempt} falhou:`, error);
-            // Se for a última tentativa, lança o erro final para o usuário
-            if (attempt === MAX_RETRIES) {
-                throw new Error(`A IA não respondeu como esperado após ${MAX_RETRIES} tentativas. Tente novamente mais tarde.`);
-            }
+          console.error(`Tentativa ${attempt} falhou:`, error);
+          if (attempt === MAX_RETRIES) {
+            throw new Error(`A IA não respondeu como esperado após ${MAX_RETRIES} tentativas. Tente novamente mais tarde.`);
+          }
         }
       }
-      // --- Fim da Lógica de Retentativa ---
-
     } catch (error) {
       console.error("Erro final na análise com IA:", error);
       toast({
@@ -236,12 +228,17 @@ const Dashboard = () => {
         variant: "destructive",
       });
     } finally {
-      setIsAnalyzing(false); // Garante que a animação de loading sempre pare
+      setIsAnalyzing(false); // <-- FINALIZA O LOADING, independentemente do resultado
     }
   };
 
+  // <-- RENDERIZAÇÃO CONDICIONAL -->
+  // Se estiver analisando com a IA, mostra a tela de loading.
+  if (isAnalyzing) {
+    return <LoadingScreen onComplete={() => setIsAnalyzing(false)} />;
+  }
 
-  // O restante do componente permanece o mesmo...
+  // Caso contrário, mostra o dashboard normal.
   return (
     <Layout>
       <div className="max-w-4xl mx-auto space-y-8 p-4">
@@ -256,7 +253,6 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Inputs do formulário */}
                 <div className="space-y-2">
                   <Label htmlFor="weight">Peso (kg)</Label>
                   <Input id="weight" type="number" placeholder="70" value={formData.weight} onChange={(e) => handleInputChange("weight", e.target.value)} />
@@ -336,13 +332,9 @@ const Dashboard = () => {
                 )}
             </div>
             
-            <Button onClick={handleImageAnalysis} className="w-full" disabled={isAnalyzing || !selectedFile || !bmiResult}>
-              {isAnalyzing ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                  Analisando...
-                </>
-              ) : "Analisar com IA"}
+            {/* O botão agora não precisa mais da animação de spin interna, pois a tela inteira será substituída */}
+            <Button onClick={handleImageAnalysis} className="w-full" disabled={!selectedFile || !bmiResult}>
+              Analisar com IA
             </Button>
 
             {aiAnalysis && (
@@ -360,7 +352,6 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-
                 <div>
                     <h3 className="text-xl font-bold mb-4 text-primary">Metas Diárias</h3>
                     <div className="grid grid-cols-2 gap-4">
@@ -380,7 +371,6 @@ const Dashboard = () => {
                        </div>
                     </div>
                 </div>
-
                 <div>
                   <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-primary">
                     <Utensils className="w-6 h-6" />

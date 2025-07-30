@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
+import logo from "@/pages/appyellow.png";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -111,8 +112,8 @@ const Register = () => {
           <CardHeader className="text-center space-y-4">
             <div className="flex justify-center">
               <img 
-                src="/logo-aquafit.png" 
-                alt="AquaFit Logo" 
+                src={logo} 
+                alt="AquaFit" 
                 className="w-16 h-16 floating-animation"
               />
             </div>

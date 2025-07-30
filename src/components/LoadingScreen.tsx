@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import logo from "@/pages/appyellow.png";
 interface LoadingScreenProps {
   onComplete: () => void;
   message?: string;
@@ -28,7 +28,7 @@ const LoadingScreen = ({ onComplete, message = "Analyzing your image..." }: Load
       <div className="text-center space-y-8">
         <div className="relative">
           <img 
-            src="/logo-aquafit.png" 
+            src={logo} 
             alt="AquaFit Logo" 
             className="w-24 h-24 mx-auto logo-spin"
           />
