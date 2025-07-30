@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -55,20 +57,51 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
 
-    // Simulate registration process
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      let data: { message?: string } = {};
+      try {
+        data = await response.json();
+      } catch (e) {
+        console.warn("Resposta sem JSON:", e);
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erro ao registrar");
+      }
+
       toast({
         title: "Cadastro realizado com sucesso!",
         description: "Bem-vindo ao AquaFit! Faça login para continuar.",
+        duration: 2000,
       });
-      navigate("/login");
-    }, 1500);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      toast({
+        title: "Erro ao cadastrar",
+        description: error instanceof Error ? error.message : "Algo deu errado.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

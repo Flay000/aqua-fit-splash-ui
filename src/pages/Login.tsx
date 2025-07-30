@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
+import logo from "@/pages/appyellow.png";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";  
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,13 +21,32 @@ const Login = () => {
     setIsLoading(true);
 
     // Simulate login process
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
-      toast({
-        title: "Login realizado com sucesso!",
-        description: "Bem-vindo de volta ao AquaFit",
-      });
-      navigate("/dashboard");
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        if (!response.ok) {
+          throw new Error("Login falhou. Verifique suas credenciais.");
+        }
+        toast({
+          title: "Login realizado com sucesso!",
+          description: "Bem-vindo de volta ao AquaFit",
+          duration: 1000,
+        });
+        navigate("/dashboard");
+      } catch (error) {
+        toast({
+          title: "Erro ao fazer login",
+          description: error instanceof Error ? error.message : "Ocorreu um erro inesperado.",
+          variant: "destructive",
+        });
+      }
     }, 1500);
   };
 
@@ -36,7 +57,7 @@ const Login = () => {
           <CardHeader className="text-center space-y-4">
             <div className="flex justify-center">
               <img 
-                src="/logo-aquafit.png" 
+                src={logo} 
                 alt="AquaFit Logo" 
                 className="w-16 h-16 floating-animation"
               />

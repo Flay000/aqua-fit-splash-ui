@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import logo from "@/pages/appyellow.png";
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,7 +14,7 @@ const Layout = ({ children, showHeader = true }: LayoutProps) => {
           <div className="container mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <img 
-                src="/logo-aquafit.png" 
+                src={logo} 
                 alt="AquaFit Logo" 
                 className="w-10 h-10 floating-animation"
               />
