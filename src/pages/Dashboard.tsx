@@ -45,8 +45,8 @@ const Dashboard = () => {
   const handleImageAnalysis = () => {
     if (!selectedFile) {
       toast({
-        title: "No image selected",
-        description: "Please select an image to analyze",
+        title: "Nenhuma imagem selecionada",
+        description: "Por favor, selecione uma imagem para analisar",
         variant: "destructive"
       });
       return;
@@ -58,8 +58,8 @@ const Dashboard = () => {
   const handleAnalysisComplete = () => {
     setIsAnalyzing(false);
     toast({
-      title: "Analysis complete!",
-      description: "Your image has been analyzed. Check your results below.",
+      title: "Análise concluída!",
+      description: "Sua imagem foi analisada. Confira os resultados abaixo.",
     });
   };
 
@@ -70,16 +70,16 @@ const Dashboard = () => {
     
     if (missingFields.length > 0) {
       toast({
-        title: "Missing information",
-        description: "Please fill in all required fields",
+        title: "Informações em falta",
+        description: "Por favor, preencha todos os campos obrigatórios",
         variant: "destructive"
       });
       return;
     }
 
     toast({
-      title: "Profile updated!",
-      description: "Your health profile has been saved successfully.",
+      title: "Perfil atualizado!",
+      description: "Seu perfil de saúde foi salvo com sucesso.",
     });
   };
 
@@ -91,9 +91,9 @@ const Dashboard = () => {
     <Layout>
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-primary">Welcome to AquaFit</h1>
+          <h1 className="text-4xl font-bold text-primary">Bem-vindo ao AquaFit</h1>
           <p className="text-lg text-muted-foreground">
-            Let's personalize your health and fitness journey
+            Vamos personalizar sua jornada de saúde e fitness
           </p>
         </div>
 
@@ -101,15 +101,15 @@ const Dashboard = () => {
           {/* Profile Information */}
           <Card className="aqua-card animate-fade-in">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">Health Profile</CardTitle>
+              <CardTitle className="text-2xl text-primary">Perfil de Saúde</CardTitle>
               <CardDescription>
-                Tell us about yourself to get personalized recommendations
+                Conte-nos sobre você para receber recomendações personalizadas
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="weight">Weight (kg)</Label>
+                  <Label htmlFor="weight">Peso (kg)</Label>
                   <Input
                     id="weight"
                     type="number"
@@ -120,7 +120,7 @@ const Dashboard = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="height">Height (cm)</Label>
+                  <Label htmlFor="height">Altura (cm)</Label>
                   <Input
                     id="height"
                     type="number"
@@ -134,7 +134,7 @@ const Dashboard = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="age">Age</Label>
+                  <Label htmlFor="age">Idade</Label>
                   <Input
                     id="age"
                     type="number"
@@ -145,57 +145,57 @@ const Dashboard = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="gender">Gender</Label>
+                  <Label htmlFor="gender">Gênero</Label>
                   <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
                     <SelectTrigger className="aqua-input">
-                      <SelectValue placeholder="Select gender" />
+                      <SelectValue placeholder="Selecione o gênero" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      <SelectItem value="male">Masculino</SelectItem>
+                      <SelectItem value="female">Feminino</SelectItem>
+                      <SelectItem value="other">Outro</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="goal">Fitness Goal</Label>
+                <Label htmlFor="goal">Objetivo de Fitness</Label>
                 <Select value={formData.goal} onValueChange={(value) => handleInputChange("goal", value)}>
                   <SelectTrigger className="aqua-input">
-                    <SelectValue placeholder="Select your goal" />
+                    <SelectValue placeholder="Selecione seu objetivo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="lose-weight">Lose Weight</SelectItem>
-                    <SelectItem value="gain-muscle">Gain Muscle</SelectItem>
-                    <SelectItem value="maintain">Maintain Current Weight</SelectItem>
+                    <SelectItem value="lose-weight">Perder Peso</SelectItem>
+                    <SelectItem value="gain-muscle">Ganhar Músculo</SelectItem>
+                    <SelectItem value="maintain">Manter Peso Atual</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="activityType">Activity Level</Label>
+                  <Label htmlFor="activityType">Nível de Atividade</Label>
                   <Select value={formData.activityType} onValueChange={(value) => handleInputChange("activityType", value)}>
                     <SelectTrigger className="aqua-input">
-                      <SelectValue placeholder="Select level" />
+                      <SelectValue placeholder="Selecione o nível" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="moderate">Moderate</SelectItem>
-                      <SelectItem value="intense">Intense</SelectItem>
+                      <SelectItem value="light">Leve</SelectItem>
+                      <SelectItem value="moderate">Moderado</SelectItem>
+                      <SelectItem value="intense">Intenso</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="daysPerWeek">Days per Week</Label>
+                  <Label htmlFor="daysPerWeek">Dias por Semana</Label>
                   <Select value={formData.daysPerWeek} onValueChange={(value) => handleInputChange("daysPerWeek", value)}>
                     <SelectTrigger className="aqua-input">
-                      <SelectValue placeholder="Select days" />
+                      <SelectValue placeholder="Selecione os dias" />
                     </SelectTrigger>
                     <SelectContent>
                       {[1, 2, 3, 4, 5, 6, 7].map(day => (
-                        <SelectItem key={day} value={day.toString()}>{day} day{day > 1 ? 's' : ''}</SelectItem>
+                        <SelectItem key={day} value={day.toString()}>{day} dia{day > 1 ? 's' : ''}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -203,10 +203,10 @@ const Dashboard = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="healthCondition">Health Conditions (Optional)</Label>
+                <Label htmlFor="healthCondition">Condições de Saúde (Opcional)</Label>
                 <Textarea
                   id="healthCondition"
-                  placeholder="Any health conditions or medications we should know about..."
+                  placeholder="Alguma condição de saúde ou medicamento que devemos saber..."
                   value={formData.healthCondition}
                   onChange={(e) => handleInputChange("healthCondition", e.target.value)}
                   className="aqua-input"
@@ -218,7 +218,7 @@ const Dashboard = () => {
                 onClick={handleSubmitProfile}
                 className="w-full aqua-button"
               >
-                Save Profile
+                Salvar Perfil
               </Button>
             </CardContent>
           </Card>
@@ -228,10 +228,10 @@ const Dashboard = () => {
             <CardHeader>
               <CardTitle className="text-2xl text-primary flex items-center gap-2">
                 <Camera className="w-6 h-6" />
-                AI Image Analysis
+                Análise de Imagem com IA
               </CardTitle>
               <CardDescription>
-                Upload a photo for AI-powered health and fitness analysis
+                Envie uma foto para análise de saúde e fitness com IA
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -253,16 +253,16 @@ const Dashboard = () => {
                           className="w-full h-48 object-cover rounded-lg mx-auto"
                         />
                         <p className="text-sm text-muted-foreground">
-                          Click to change image
+                          Clique para alterar a imagem
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-4">
                         <Upload className="w-12 h-12 text-muted-foreground mx-auto" />
                         <div>
-                          <p className="text-lg font-medium">Upload an image</p>
+                          <p className="text-lg font-medium">Enviar uma imagem</p>
                           <p className="text-sm text-muted-foreground">
-                            PNG, JPG up to 10MB
+                            PNG, JPG até 10MB
                           </p>
                         </div>
                       </div>
@@ -272,7 +272,7 @@ const Dashboard = () => {
 
                 {selectedFile && (
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Selected file:</p>
+                    <p className="text-sm font-medium">Arquivo selecionado:</p>
                     <p className="text-sm text-muted-foreground">{selectedFile.name}</p>
                   </div>
                 )}
@@ -283,16 +283,16 @@ const Dashboard = () => {
                 className="w-full aqua-button"
                 disabled={!selectedFile}
               >
-                Analyze with AI
+                Analisar com IA
               </Button>
 
               <div className="text-sm text-muted-foreground space-y-2">
-                <p className="font-medium">What can our AI analyze?</p>
+                <p className="font-medium">O que nossa IA pode analisar?</p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>Body composition estimation</li>
-                  <li>Posture analysis</li>
-                  <li>Exercise form assessment</li>
-                  <li>Meal nutrition breakdown</li>
+                  <li>Estimativa de composição corporal</li>
+                  <li>Análise de postura</li>
+                  <li>Avaliação da forma de exercício</li>
+                  <li>Análise nutricional de refeições</li>
                 </ul>
               </div>
             </CardContent>

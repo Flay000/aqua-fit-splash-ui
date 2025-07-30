@@ -10,23 +10,23 @@ const Index = () => {
   const features = [
     {
       icon: Target,
-      title: "Personalized Goals",
-      description: "AI-powered fitness and nutrition plans tailored to your unique needs"
+      title: "Objetivos Personalizados",
+      description: "Planos de fitness e nutrição com IA adaptados às suas necessidades únicas"
     },
     {
       icon: Zap,
-      title: "Smart Analytics",
-      description: "Advanced image analysis to track your progress and optimize results"
+      title: "Análise Inteligente",
+      description: "Análise avançada de imagens para acompanhar seu progresso e otimizar resultados"
     },
     {
       icon: Droplets,
-      title: "Hydration Focus",
-      description: "Specialized hydration tracking and aqua-based fitness routines"
+      title: "Foco na Hidratação",
+      description: "Rastreamento especializado de hidratação e rotinas de fitness aquático"
     },
     {
       icon: Users,
-      title: "Community Support",
-      description: "Connect with like-minded individuals on similar health journeys"
+      title: "Suporte da Comunidade",
+      description: "Conecte-se com pessoas que compartilham objetivos similares de saúde"
     }
   ];
 
@@ -50,12 +50,12 @@ const Index = () => {
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in">
-                Your AI-Powered Health, Fitness & Nutrition Companion
+                Seu Companheiro de Saúde, Fitness e Nutrição com IA
               </p>
               
               <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto animate-fade-in">
-                Dive into a personalized wellness journey with cutting-edge AI analysis, 
-                tailored workout plans, and smart nutrition tracking.
+                Mergulhe em uma jornada de bem-estar personalizada com análise de IA avançada, 
+                planos de treino sob medida e acompanhamento inteligente de nutrição.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
@@ -65,7 +65,7 @@ const Index = () => {
                   size="lg"
                   className="text-lg px-8 py-4"
                 >
-                  Start Your Journey
+                  Inicie Sua Jornada
                 </Button>
                 <Button 
                   onClick={() => navigate("/login")}
@@ -73,7 +73,7 @@ const Index = () => {
                   size="lg"
                   className="text-lg px-8 py-4"
                 >
-                  Sign In
+                  Entrar
                 </Button>
               </div>
             </div>
@@ -85,10 +85,10 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-primary mb-4">
-                Why Choose AquaFit?
+                Por que Escolher o AquaFit?
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Experience the future of personalized health and fitness with our innovative features
+                Experimente o futuro da saúde e fitness personalizado com nossos recursos inovadores
               </p>
             </div>
             
@@ -120,10 +120,10 @@ const Index = () => {
             <Card className="aqua-card max-w-2xl mx-auto">
               <CardHeader>
                 <CardTitle className="text-3xl text-primary mb-4">
-                  Ready to Transform Your Health?
+                  Pronto para Transformar sua Saúde?
                 </CardTitle>
                 <CardDescription className="text-lg">
-                  Join thousands of users who have already started their AquaFit journey
+                  Junte-se a milhares de usuários que já iniciaram sua jornada no AquaFit
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -133,7 +133,7 @@ const Index = () => {
                   size="lg"
                   className="text-lg px-12 py-4"
                 >
-                  Get Started Free
+                  Começar Grátis
                 </Button>
               </CardContent>
             </Card>

@@ -22,8 +22,8 @@ const Login = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Login successful!",
-        description: "Welcome back to AquaFit",
+        title: "Login realizado com sucesso!",
+        description: "Bem-vindo de volta ao AquaFit",
       });
       navigate("/dashboard");
     }, 1500);
@@ -43,7 +43,7 @@ const Login = () => {
             </div>
             <CardTitle className="text-3xl font-bold text-primary">AquaFit</CardTitle>
             <CardDescription>
-              Sign in to your health and fitness journey
+              Entre na sua jornada de saúde e fitness
             </CardDescription>
           </CardHeader>
           
@@ -54,7 +54,7 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Digite seu email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="aqua-input"
@@ -63,11 +63,11 @@ const Login = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Senha</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Digite sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="aqua-input"
@@ -80,18 +80,18 @@ const Login = () => {
                 className="w-full aqua-button"
                 disabled={isLoading}
               >
-                {isLoading ? "Signing in..." : "Log In"}
+                {isLoading ? "Entrando..." : "Entrar"}
               </Button>
             </form>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
+                Não tem uma conta?{" "}
                 <Link 
                   to="/register" 
                   className="text-primary hover:text-secondary transition-colors font-medium"
                 >
-                  Sign up
+                  Cadastre-se
                 </Link>
               </p>
             </div>

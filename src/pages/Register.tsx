@@ -23,23 +23,23 @@ const Register = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required";
+      newErrors.fullName = "Nome completo é obrigatório";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email é obrigatório";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "Email inválido";
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Senha é obrigatória";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = "A senha deve ter pelo menos 6 caracteres";
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = "As senhas não coincidem";
     }
 
     setErrors(newErrors);
@@ -64,8 +64,8 @@ const Register = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Registration successful!",
-        description: "Welcome to AquaFit! Please log in to continue.",
+        title: "Cadastro realizado com sucesso!",
+        description: "Bem-vindo ao AquaFit! Faça login para continuar.",
       });
       navigate("/login");
     }, 1500);
@@ -83,20 +83,20 @@ const Register = () => {
                 className="w-16 h-16 floating-animation"
               />
             </div>
-            <CardTitle className="text-3xl font-bold text-primary">Join AquaFit</CardTitle>
+            <CardTitle className="text-3xl font-bold text-primary">Junte-se ao AquaFit</CardTitle>
             <CardDescription>
-              Start your personalized health and fitness journey
+              Inicie sua jornada personalizada de saúde e fitness
             </CardDescription>
           </CardHeader>
           
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
+                <Label htmlFor="fullName">Nome Completo</Label>
                 <Input
                   id="fullName"
                   type="text"
-                  placeholder="Enter your full name"
+                  placeholder="Digite seu nome completo"
                   value={formData.fullName}
                   onChange={(e) => handleChange("fullName", e.target.value)}
                   className={`aqua-input ${errors.fullName ? "border-destructive" : ""}`}
@@ -110,7 +110,7 @@ const Register = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Digite seu email"
                   value={formData.email}
                   onChange={(e) => handleChange("email", e.target.value)}
                   className={`aqua-input ${errors.email ? "border-destructive" : ""}`}
@@ -120,11 +120,11 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Senha</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Digite sua senha"
                   value={formData.password}
                   onChange={(e) => handleChange("password", e.target.value)}
                   className={`aqua-input ${errors.password ? "border-destructive" : ""}`}
@@ -134,11 +134,11 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">Confirmar Senha</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
-                  placeholder="Confirm your password"
+                  placeholder="Confirme sua senha"
                   value={formData.confirmPassword}
                   onChange={(e) => handleChange("confirmPassword", e.target.value)}
                   className={`aqua-input ${errors.confirmPassword ? "border-destructive" : ""}`}
@@ -152,18 +152,18 @@ const Register = () => {
                 className="w-full aqua-button"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Register"}
+                {isLoading ? "Criando conta..." : "Cadastrar"}
               </Button>
             </form>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{" "}
+                Já tem uma conta?{" "}
                 <Link 
                   to="/login" 
                   className="text-primary hover:text-secondary transition-colors font-medium"
                 >
-                  Log in
+                  Entrar
                 </Link>
               </p>
             </div>
