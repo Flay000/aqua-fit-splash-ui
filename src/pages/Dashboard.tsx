@@ -9,7 +9,7 @@ import { Calculator, Weight, Ruler, Upload, Brain, Utensils, Droplet, Beef } fro
 import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/Layout";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import LoadingScreen from "@/components/LoadingScreen"; // <-- Importação do seu componente de loading
+import LoadingScreen from "@/components/LoadingScreen"; 
 
 // Configure a API Key do Gemini
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "YOUR_GEMINI_API_KEY";
@@ -55,14 +55,13 @@ const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false); // <-- Estado que controlará o loading
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Função de cálculo de IMC revertida para a versão original (rápida)
   const calculateBMI = () => {
     const weightNum = parseFloat(formData.weight);
     const heightNum = parseFloat(formData.height) / 100;
@@ -139,7 +138,7 @@ const Dashboard = () => {
       return;
     }
 
-    setIsAnalyzing(true); // <-- INICIA O LOADING
+    setIsAnalyzing(true);
     setAiAnalysis(null);
 
     const MAX_RETRIES = 5;
@@ -209,7 +208,7 @@ const Dashboard = () => {
               description: "Sua análise corporal e plano de dieta estão prontos.",
             });
             
-            setIsAnalyzing(false); // Para a animação de loading
+            setIsAnalyzing(false);
             return;
           }
           throw new Error("Formato de resposta inválido da IA.");
@@ -228,30 +227,30 @@ const Dashboard = () => {
         variant: "destructive",
       });
     } finally {
-      setIsAnalyzing(false); // <-- FINALIZA O LOADING, independentemente do resultado
+      setIsAnalyzing(false);
     }
   };
 
-  // <-- RENDERIZAÇÃO CONDICIONAL -->
-  // Se estiver analisando com a IA, mostra a tela de loading.
   if (isAnalyzing) {
-    return <LoadingScreen onComplete={() => setIsAnalyzing(false)} />;
+    return <LoadingScreen />;
   }
 
-  // Caso contrário, mostra o dashboard normal.
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto space-y-8 p-4">
+      {/* MELHORIA: Padding ajustado para telas pequenas (p-2) e maiores (sm:p-4) */}
+      <div className="max-w-4xl mx-auto space-y-8 p-2 sm:p-4">
         {/* Formulário de Dados e Calculadora de IMC */}
         <Card className="aqua-card">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary flex items-center gap-2">
+              {/* MELHORIA: Tamanho do título responsivo (text-xl em mobile, sm:text-2xl em telas maiores) */}
+              <CardTitle className="text-xl sm:text-2xl text-primary flex items-center gap-2">
                 <Calculator className="w-6 h-6" />
                 Seu Perfil de Saúde
               </CardTitle>
               <CardDescription>Preencha seus dados para calcular o IMC e obter análises personalizadas.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Este grid já era responsivo (grid-cols-1 md:grid-cols-2), o que é ótimo! */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="weight">Peso (kg)</Label>
@@ -300,7 +299,7 @@ const Dashboard = () => {
               {bmiResult && (
                 <div className="mt-4 p-4 bg-muted rounded-lg">
                   <h3 className="text-lg font-semibold">Resultado do IMC</h3>
-                  <p className="text-2xl font-bold">
+                  <p className="text-xl sm:text-2xl font-bold"> {/* MELHORIA: Tamanho da fonte responsivo */}
                     Seu IMC é <span className={bmiResult.color}>{bmiResult.value}</span> — {bmiResult.category}
                   </p>
                   <p className="text-sm text-muted-foreground">{bmiResult.description}</p>
@@ -312,7 +311,7 @@ const Dashboard = () => {
         {/* Análise com IA */}
         <Card className="aqua-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-primary flex items-center gap-2">
+            <CardTitle className="text-xl sm:text-2xl text-primary flex items-center gap-2"> {/* MELHORIA: Tamanho do título responsivo */}
               <Brain className="w-6 h-6" />
               Análise Corporal com IA
             </CardTitle>
@@ -332,7 +331,6 @@ const Dashboard = () => {
                 )}
             </div>
             
-            {/* O botão agora não precisa mais da animação de spin interna, pois a tela inteira será substituída */}
             <Button onClick={handleImageAnalysis} className="w-full" disabled={!selectedFile || !bmiResult}>
               Analisar com IA
             </Button>
@@ -341,7 +339,8 @@ const Dashboard = () => {
               <div className="mt-6 space-y-6 p-4 bg-muted rounded-lg">
                 <div>
                     <h3 className="text-xl font-bold mb-4 text-primary">Resultados da Análise</h3>
-                    <div className="grid grid-cols-2 gap-4 text-center">
+                    {/* MELHORIA: Grid de 1 coluna em mobile (padrão) e 2 colunas em telas maiores (sm:) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
                         <div className="p-3 bg-background rounded-lg">
                             <p className="text-sm text-muted-foreground">Gordura Corporal</p>
                             <p className="text-2xl font-bold">{aiAnalysis.bodyFatPercentage}%</p>
@@ -354,7 +353,8 @@ const Dashboard = () => {
                 </div>
                 <div>
                     <h3 className="text-xl font-bold mb-4 text-primary">Metas Diárias</h3>
-                    <div className="grid grid-cols-2 gap-4">
+                     {/* MELHORIA: Grid de 1 coluna em mobile (padrão) e 2 colunas em telas maiores (sm:) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                        <div className="flex items-center gap-3 p-3 bg-background rounded-lg">
                            <Droplet className="w-6 h-6 text-blue-500" />
                            <div>
